@@ -15,8 +15,8 @@ type authHandler struct {
 }
 
 func (sh *authHandler) Register(ctx context.Context, request *auth.RegisterRequest) (
-		*auth.RegisterResponse,
-		error,
+	*auth.RegisterResponse,
+	error,
 ) {
 	validationErrors, err := utils.CheckValidation(request)
 	if err != nil {
@@ -29,6 +29,44 @@ func (sh *authHandler) Register(ctx context.Context, request *auth.RegisterReque
 	}
 	
 	res, err := sh.authService.Register(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	
+	return res, nil
+}
+
+func (sh *authHandler) Login(ctx context.Context, request *auth.LoginRequest) (*auth.LoginResponse, error) {
+	validationErrors, err := utils.CheckValidation(request)
+	if err != nil {
+		return nil, err
+	}
+	if validationErrors != nil {
+		return &auth.LoginResponse{
+			Base: utils.ValidationErrorResponse(validationErrors),
+		}, nil
+	}
+	
+	res, err := sh.authService.Login(ctx, request)
+	if err != nil {
+		return nil, err
+	}
+	
+	return res, nil
+}
+
+func (sh *authHandler) Logout(ctx context.Context, request *auth.LogoutRequest) (*auth.LogoutResponse, error) {
+	validationErrors, err := utils.CheckValidation(request)
+	if err != nil {
+		return nil, err
+	}
+	if validationErrors != nil {
+		return &auth.LogoutResponse{
+			Base: utils.ValidationErrorResponse(validationErrors),
+		}, nil
+	}
+	
+	res, err := sh.authService.Logout(ctx, request)
 	if err != nil {
 		return nil, err
 	}
