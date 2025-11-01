@@ -61,18 +61,42 @@ Run a gRPC Client
   ```
 📂 Project Structure
   ```
-go-grpc-be/
-├── cmd/
-│   ├── server/          # Entry point for gRPC server
-│   └── client/          # Example gRPC client
-├── pkg/
-│   ├── pb/              # Generated protobuf code
-│   ├── service/         # gRPC service implementations
-│   └── utils/           # Utility functions
-├── proto/               # Protocol Buffer (.proto) definitions
-└── internal/            # Private application code (domain, repository, etc.)
-
-  
+  go-grpc-be/
+  ├── internal/
+  │   ├── entity/                # Domain models (e.g., user.go)
+  │   ├── handler/               # gRPC / transport layer handlers
+  │   │   ├── auth.go
+  │   │   └── service.go
+  │   ├── repository/            # Data access logic
+  │   │   └── auth_repository.go
+  │   ├── service/               # Business logic layer
+  │   │   └── auth_service.go
+  │   └── utils/                 # Shared utilities
+  │       ├── response.go
+  │       └── validator.go
+  │
+  ├── pkg/
+  │   ├── database/              # Database initialization and connection
+  │   ├── grpcmiddleware/        # Custom gRPC middlewares
+  │   │   └── error_middlewares.go
+  │   └── pb/                    # Generated protobuf code
+  │
+  ├── proto/                     # Protocol Buffer definitions
+  │   ├── auth/                  # Authentication service
+  │   │   └── auth.proto
+  │   ├── buf/validate/          # Validation schemas
+  │   │   └── validate.proto
+  │   ├── common/                # Common messages
+  │   │   └── base_response.proto
+  │   └── service/               # Core service definitions
+  │       └── service.proto
+  │
+  ├── .env                       # Environment variables
+  ├── .gitignore
+  ├── go.mod
+  ├── go.sum
+  └── main.go                    # App entry point
+  ```
 
 
 
